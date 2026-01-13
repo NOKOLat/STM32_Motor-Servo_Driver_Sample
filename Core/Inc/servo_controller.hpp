@@ -39,9 +39,6 @@ class ServoController : public PwmController {
         // 最大パルス幅（+90度）[us]
         uint32_t m_max_pulse;
 
-        // 中立位置パルス幅（0度）[us]
-        static constexpr uint32_t NEUTRAL_PULSE = 1500;
-
         // 最小角度（度）
         static constexpr float MIN_ANGLE = -90.0f;
 

@@ -39,8 +39,9 @@ uint8_t ServoController::setAngle(float angle) {
 
 uint8_t ServoController::neutral() {
 
-    // 中立位置（0度）に設定
-    return setPulseWidth(NEUTRAL_PULSE);
+    // 中立位置（0度）に設定：min/maxの中間値
+    uint32_t neutral_pulse = (m_min_pulse + m_max_pulse) / 2;
+    return setPulseWidth(neutral_pulse);
 }
 
 uint8_t ServoController::stop() {

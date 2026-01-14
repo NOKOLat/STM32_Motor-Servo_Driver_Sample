@@ -16,15 +16,12 @@ PwmController::PwmController(TIM_HandleTypeDef* htim, uint32_t channel)
     // APB1タイマークロック（90MHz）を取得
     uint32_t apb1_clock = HAL_RCC_GetPCLK1Freq();
     m_timer_clock = apb1_clock * 2;
-    printf("timer_clock: %d\n", m_timer_clock);
 
     // タイマープリスケーラーを取得
     m_prescaler = m_htim->Init.Prescaler;
-    printf("Prescaler: %d\n", m_prescaler);
 
     // タイマー周波数を計算
     m_timer_freq = m_timer_clock / (m_prescaler + 1);
-    printf("freq: %d\n", m_timer_freq);
 
     // 初期化成功
     m_is_initialized = 1;

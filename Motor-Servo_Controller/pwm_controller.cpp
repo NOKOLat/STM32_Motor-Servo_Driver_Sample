@@ -52,6 +52,12 @@ uint8_t PwmController::setPulseWidth(uint32_t pulse_width_us) {
         return 1;
     }
 
+    // パルス幅の範囲チェック
+    if (!checkPulseWidthRange(pulse_width_us)) {
+
+        return 1;
+    }
+
     // パルス幅（us）をカウント値に変換
     uint32_t pulse_count = (pulse_width_us * m_timer_freq) / 1000000;
 
@@ -76,4 +82,15 @@ uint8_t PwmController::stop() {
     }
 
     return 0;
+}
+
+bool PwmController::checkPulseWidthRange(uint32_t pulse_width_us) {
+
+    // パルス幅が範囲内かチェック
+    if (pulse_width_us < MIN_PULSE_WIDTH || pulse_width_us > MAX_PULSE_WIDTH) {
+
+        return false;
+    }
+
+    return true;
 }

@@ -25,6 +25,9 @@ class PwmController {
 
     private:
 
+        // パルス幅の範囲チェック
+        bool checkPulseWidthRange(uint32_t pulse_width_us);
+
         // タイマーハンドルへのポインタ
         TIM_HandleTypeDef* m_htim;
 
@@ -42,6 +45,12 @@ class PwmController {
 
         // タイマー周波数（Hz）
         uint32_t m_timer_freq;
+
+        // パルス幅の最小値（us）
+        static constexpr uint32_t MIN_PULSE_WIDTH = 1000;
+
+        // パルス幅の最大値（us）
+        static constexpr uint32_t MAX_PULSE_WIDTH = 2000;
 };
 
 #endif /* INC_PWM_CONTROLLER_HPP_ */

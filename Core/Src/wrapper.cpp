@@ -2,45 +2,52 @@
 #include "tim.h"
 #include "stdio.h"
 #include <optional>
-#include "servo_controller.hpp"
+#include "motor_controller.hpp"
 
-// グローバルサーボコントローラーインスタンス
-std::optional<ServoController> servo_controller;
+// グローバルモーターコントローラーインスタンス
+std::optional<MotorController> motor_controller;
 
 void init(){
 
-    // サーボコントローラーを初期化
-    servo_controller.emplace(&htim1, TIM_CHANNEL_1);
+    // モーターコントローラーを初期化（通常モード）
+    motor_controller.emplace(&htim1, TIM_CHANNEL_1, MotorMode::NORMAL);
 
     // 初期化の確認
-    if (servo_controller->isInitialized()) {
+    if (motor_controller->isInitialized()) {
 
-        printf("ServoController initialized successfully\n");
+        printf("MotorController (NORMAL mode) initialized successfully\n");
     } 
     else {
 
-        printf("ServoController initialization failed\n");
+        printf("MotorController initialization failed\n");
     }
 
-    servo_controller->setPulseRange(500, 2400);
+    // パルス幅の範囲を設定（1000us ~ 2000us）
+    motor_controller->setPulseRange(1000, 2000);
+    printf("Pulse range set to 1000us ~ 2000us\n");
 
     HAL_Delay(500);
 }
 
 void loop(){
 
-    // -90度に設定
-    servo_controller->setAngle(-90.0f);
-    printf("Angle: -90 deg\n");
-    HAL_Delay(1000);
+    // 0%に設定
+    motor_controller->setSpeed(0.0f);
+    printf("Motor speed: 0 %%\n");
+    HAL_Delay(5000);
 
-    // 中立位置（0度）に設定
-    servo_controller->neutral();
-    printf("Angle: 0 deg (neutral)\n");
-    HAL_Delay(1000);
+    // 50%に設定
+    motor_controller->setSpeed(50.0f);
+    printf("Motor speed: 50 %%\n");
+    HAL_Delay(5000);
 
-    // +90度に設定
-    servo_controller->setAngle(90.0f);
-    printf("Angle: +90 deg\n");
-    HAL_Delay(1000);
+    // 100%に設定
+    motor_controller->setSpeed(100.0f);
+    printf("Motor speed: 100 %%\n");
+    HAL_Delay(5000);
+
+    // モーターを停止
+    motor_controller->stop();
+    printf("Motor stopped\n");
+    HAL_Delay(5000);
 }

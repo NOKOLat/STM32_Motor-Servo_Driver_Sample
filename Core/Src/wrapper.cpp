@@ -8,7 +8,7 @@ MotorController* motor_controller = nullptr;
 
 void init(){
 
-    // 動的確保
+    // インスタンスの作成
     motor_controller = new MotorController(&htim1, TIM_CHANNEL_1, MotorMode::NORMAL);
 
     // 初期化の確認
@@ -33,9 +33,24 @@ void init(){
 
 void loop(){
 
-    // 25%に設定
-    motor_controller->setSpeed(25.0f);
-    printf("Motor speed: 25 %%\n");
+    // 10%に設定
+    motor_controller->setSpeed(10.0f);
+    printf("Motor speed: 10 %%\n");
+    HAL_Delay(5000);
+
+    // 20%に設定
+    motor_controller->setSpeed(20.0f);
+    printf("Motor speed: 20 %%\n");
+    HAL_Delay(5000);
+
+    // 30%に設定
+    motor_controller->setSpeed(30.0f);
+    printf("Motor speed: 30 %%\n");
+    HAL_Delay(5000);
+
+    // 40%に設定
+    motor_controller->setSpeed(40.0f);
+    printf("Motor speed: 40 %%\n");
     HAL_Delay(5000);
 
     // 50%に設定

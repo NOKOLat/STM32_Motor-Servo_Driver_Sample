@@ -81,3 +81,19 @@ void loop(){
     HAL_Delay(1000);
 }
 ```
+
+## MotorController : public PwmController
+
+
+### public methods
+
+- constructor()
+- destructor()
+- uint8_t isInitialized()　// 基底クラスのメソッドを使用
+- uint8_t setAngle(float angle)
+- uint8_t stop()
+
+pwmの設定系のメソッドは基底クラスのsetPulseWidth()を使用する
+
+1000~2000usで速度制御する
+値は0 ~ 100 (%)で指定する

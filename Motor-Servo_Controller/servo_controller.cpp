@@ -5,6 +5,9 @@ ServoController::ServoController(TIM_HandleTypeDef* htim, uint32_t channel): Pwm
     // デフォルトのパルス幅範囲を設定
     m_min_pulse = 1000;
     m_max_pulse = 2000;
+
+    // 中立位置を計算（最小値と最大値の中間）
+    m_neutral_pulse = (m_min_pulse + m_max_pulse) / 2;
 }
 
 ServoController::~ServoController() {
@@ -20,6 +23,9 @@ void ServoController::setPulseRange(uint32_t min_pulse, uint32_t max_pulse) {
 
     m_min_pulse = min_pulse;
     m_max_pulse = max_pulse;
+
+    // パルス幅範囲が変更されたので、中立位置を再計算
+    m_neutral_pulse = (m_min_pulse + m_max_pulse) / 2;
 }
 
 uint8_t ServoController::setAngle(float angle) {
@@ -39,9 +45,8 @@ uint8_t ServoController::setAngle(float angle) {
 
 uint8_t ServoController::neutral() {
 
-    // 中立位置（0度）に設定：min/maxの中間値
-    uint32_t neutral_pulse = (m_min_pulse + m_max_pulse) / 2;
-    return setPulseWidth(neutral_pulse);
+    // 中立位置（0度）に設定：計算された中立パルス幅を使用
+    return setPulseWidth(m_neutral_pulse);
 }
 
 uint8_t ServoController::stop() {

@@ -3,37 +3,51 @@
 #include "stdio.h"
 #include "motor_controller.hpp"
 
-void Calibration();
+// グローバルモーターコントローラーポインタ
+MotorController* motor_controller = nullptr;
 
 void init(){
 
-	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
-	HAL_Delay(500);
+    // 動的確保
+    motor_controller = new MotorController(&htim1, TIM_CHANNEL_1, MotorMode::NORMAL);
 
-	Calibration();
+    // 初期化の確認
+    if (motor_controller->isInitialized()) {
 
-	__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 1000);
-	HAL_Delay(5000);
-	printf("Init End\n");
+        printf("MotorController (NORMAL mode) initialized successfully\n");
+    }
+    else {
+
+        printf("MotorController initialization failed\n");
+    }
+
+    // パルス幅の範囲を設定（1000us ~ 2000us）
+    motor_controller->setPulseRange(1000, 2000);
+    printf("Pulse range set to 1000us ~ 2000us\n");
+
+    // 0%に設定（初期値を送信）
+    motor_controller->setSpeed(0.0f);
+    printf("Motor speed: 0 %%\n");
+    HAL_Delay(10000);
 }
 
 void loop(){
 
-	__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 1400);
-	HAL_Delay(10000);
+    // 25%に設定
+    motor_controller->setSpeed(25.0f);
+    printf("Motor speed: 25 %%\n");
+    HAL_Delay(5000);
 
-	HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_1);
-}
+    // 50%に設定
+    motor_controller->setSpeed(50.0f);
+    printf("Motor speed: 50 %%\n");
+    HAL_Delay(5000);
 
-void Calibration(){
+    // モーターを停止
+    motor_controller->stop();
+    printf("Motor stopped\n");
+    HAL_Delay(5000);
 
-	printf("Calibration Start\n");
-
-	__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 2000);
-	HAL_Delay(5000);
-
-	__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 1000);
-	HAL_Delay(5000);
-
-	printf("Calibration End\n");
+	printf("All Tests Completed\n");
+	while(1);
 }

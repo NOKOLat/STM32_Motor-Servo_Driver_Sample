@@ -1,0 +1,3 @@
+[submodule "Motor-Servo_Controller"]
+	path = Motor-Servo_Controller
+	url = https://github.com/NOKOLat/STM32_Motor-Servo_Driver
